@@ -5,7 +5,7 @@ using UnityEngine;
 public class Skipme : MonoBehaviour
 {
     //patrolling
-    private float speed = 5.0f;
+    public float speed = 5.0f;
     private Vector3 targetPos;
     private bool isIdle = false;
     public GameObject platform;
@@ -13,9 +13,10 @@ public class Skipme : MonoBehaviour
     //vision
     private Collider2D foundPlayer;
     public LayerMask playerMask;
-    private float patrolRadius = 10.0f;
+    public float patrolRadius = 10.0f;
     //attack
-    private float attackRadius = 15.0f;
+    public float attackRadius = 15.0f;
+    public float waitTimeBetweenAttacks = 3.0f;
     private bool attacking;
     private bool isShooting;
     public GameObject projectile;
@@ -58,7 +59,7 @@ public class Skipme : MonoBehaviour
         Projectile proj = Instantiate(projectile, transform.position, Quaternion.identity).GetComponent<Projectile>();
         bool goRight = player.transform.position.x > transform.position.x ? true : false;
         proj.setDirection(goRight);
-        yield return new WaitForSeconds(3);
+        yield return new WaitForSeconds(waitTimeBetweenAttacks);
         isShooting = false;
     }
 

@@ -541,10 +541,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 572cbcfffbdad9644ac375e95cdf4314, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  speed: 5
   platform: {fileID: 1849004643}
   playerMask:
     serializedVersion: 2
     m_Bits: 512
+  patrolRadius: 10
+  attackRadius: 15
+  waitTimeBetweenAttacks: 3
   projectile: {fileID: 6178951565616795356, guid: 12df590304157984da519ecc70eb58ba,
     type: 3}
 --- !u!1 &861841443
@@ -710,9 +714,9 @@ GameObject:
   m_Component:
   - component: {fileID: 1220299667}
   - component: {fileID: 1220299666}
-  - component: {fileID: 1220299670}
   - component: {fileID: 1220299669}
   - component: {fileID: 1220299668}
+  - component: {fileID: 1220299670}
   m_Layer: 9
   m_Name: Player
   m_TagString: Player
@@ -845,10 +849,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d7b4a6b0276324342bb968f0baef69b0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  jumpForce: 25
   feetPos: {fileID: 861841444}
+  checkRadius: 0.2
   groundMask:
     serializedVersion: 2
     m_Bits: 256
+  jumpTime: 0.25
 --- !u!1 &1606451249
 GameObject:
   m_ObjectHideFlags: 0

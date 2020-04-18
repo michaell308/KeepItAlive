@@ -13,14 +13,14 @@ public class Player : MonoBehaviour
 
     //jumping
     private bool isGrounded = false;
-    private float jumpForce = 25.0f;
+    public float jumpForce = 25.0f;
 
     public Transform feetPos;
-    private float checkRadius = 0.2f;
+    public float checkRadius = 0.2f;
     public LayerMask groundMask;
 
     private float jumpTimeCounter;
-    private float jumpTime = 0.25f;
+    public float jumpTime = 0.25f;
     private bool isJumping = false;
 
     //health

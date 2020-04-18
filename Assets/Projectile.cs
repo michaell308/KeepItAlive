@@ -4,9 +4,8 @@ using UnityEngine;
 
 public class Projectile : MonoBehaviour
 {
-    public Vector3 target;
     //private Rigidbody2D rb;
-    float speed = 10.0f;
+    private float speed = 10.0f;
     private bool goRight;
 
     void Start()
