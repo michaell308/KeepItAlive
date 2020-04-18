@@ -5,7 +5,7 @@ using UnityEngine;
 public class Projectile : MonoBehaviour
 {
     //private Rigidbody2D rb;
-    private float speed = 10.0f;
+    public float speed = 10.0f;
     private bool goRight;
 
     void Start()
