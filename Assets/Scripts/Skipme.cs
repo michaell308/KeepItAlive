@@ -26,6 +26,8 @@ public class Skipme : MonoBehaviour
 
     //animation
     public Animator animator;
+    private Material spriteMaterial;
+    private Color normalColor;
 
     public Player player;
 
@@ -33,6 +35,9 @@ public class Skipme : MonoBehaviour
     void Start()
     {
         reachedTarget();
+        spriteMaterial = GetComponent<SpriteRenderer>().material;
+        normalColor = spriteMaterial.color;
+
     }
 
     // Update is called once per frame
@@ -47,12 +52,13 @@ public class Skipme : MonoBehaviour
 
         if (foundPlayer)
         {
+            animator.SetBool("pausingPatrol", false);
             attacking = true;
-            foundPlayer = Physics2D.OverlapCircle(transform.position, attackRadius, playerMask);
             if (!isShooting)
             {
                 StartCoroutine(attackThenWait(foundPlayer));
             }
+            foundPlayer = Physics2D.OverlapCircle(transform.position, attackRadius, playerMask);
         }
         else
         {
@@ -66,7 +72,7 @@ public class Skipme : MonoBehaviour
         {
             Debug.Log("hit!");
             health--;
-
+            StartCoroutine(Flasher());
             if (health == 0)
             {
                 Destroy(this.gameObject);
@@ -77,7 +83,6 @@ public class Skipme : MonoBehaviour
     IEnumerator attackThenWait(Collider2D player)
     {
         isShooting = true;
-        Debug.Log("skipme attack hit!");
         Projectile proj = Instantiate(projectile, transform.position, Quaternion.identity).GetComponent<Projectile>();
         bool goRight = player.transform.position.x > transform.position.x ? true : false;
         proj.setDirection(goRight);
@@ -140,6 +145,16 @@ public class Skipme : MonoBehaviour
         }
     }
 
+    IEnumerator Flasher()
+    {
+        for (int i = 0; i < 4; i++)
+        {
+            GetComponent<Renderer>().material.color = Color.red;
+            yield return new WaitForSeconds(.1f);
+            GetComponent<Renderer>().material.color = normalColor;
+            yield return new WaitForSeconds(.1f);
+        }
+    }
 
 
 

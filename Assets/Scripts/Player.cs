@@ -19,27 +19,33 @@ public class Player : MonoBehaviour
     public Transform feetPos;
     public float checkRadius = 0.2f;
     public LayerMask groundMask;
+    public LayerMask skipmeMask;
+    private bool onSkipme;
 
     private float jumpTimeCounter;
     public float jumpTime = 0.25f;
     private bool isJumping = false;
 
     //health
-    private int fireCharge;
+    public int fireCharge;
     private int maxFireCharge = 3;
 
-    Brazier brazier;
+    public Brazier brazier;
 
     //attack
     public BoxCollider2D attackBox;
     private bool attackOnCooldown;
     public float attackBoxTime;
     public float attackCooldownTime;
-
     private bool attacking;
 
     //animation
     public Animator animator;
+    private Material spriteMaterial;
+    private Color normalColor;
+
+    //sound
+    private bool playedSlimeJumpSound;
 
     public static Player instance;
     
@@ -63,11 +69,8 @@ public class Player : MonoBehaviour
     {
         fireCharge = maxFireCharge;
         rb = GetComponent<Rigidbody2D>();
-    }
-
-    private void OnCollisionStay2D(Collision2D collision)
-    {
-        isGrounded = true;
+        spriteMaterial = GetComponent<SpriteRenderer>().material;
+        normalColor = spriteMaterial.color;
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -75,15 +78,7 @@ public class Player : MonoBehaviour
         if (collision.gameObject.layer == LayerMask.NameToLayer("Projectile"))
         {
             Destroy(collision.gameObject);
-            fireCharge -= 1;
-
-            if (fireCharge == 0)
-            {
-                Debug.Log("game over");
-                
-                SceneManager.LoadScene(0);
-                transform.position = brazier.transform.position;
-            }
+            Damage(1);
         }
         else if (collision.gameObject.layer == LayerMask.NameToLayer("Brazier"))
         {
@@ -92,6 +87,14 @@ public class Player : MonoBehaviour
             {
                 brazier = collision.GetComponent<Brazier>();
             }
+        }
+        else if (collision.gameObject.layer == LayerMask.NameToLayer("Waterfall"))
+        {
+            Damage(1);
+        }
+        else if (collision.gameObject.layer == LayerMask.NameToLayer("HeftyChonkerAttack"))
+        {
+            Damage(1);
         }
     }
 
@@ -130,6 +133,7 @@ public class Player : MonoBehaviour
         if (Input.GetMouseButtonDown(0) && !attackOnCooldown)
         {
             StartCoroutine(enableAttackBox());
+            Damage(1);
         }
     }
 
@@ -151,31 +155,70 @@ public class Player : MonoBehaviour
         //jumping
         
         isGrounded = Physics2D.OverlapBox(feetPos.position, feetBoxSize, 0, groundMask);
-
-        if (isGrounded && Input.GetKeyDown(KeyCode.W))
+        onSkipme = Physics2D.OverlapBox(feetPos.position, feetBoxSize, 0, skipmeMask);
+        if (onSkipme)
         {
-            rb.velocity = Vector2.up * jumpForce;
-            isJumping = true;
-            jumpTimeCounter = jumpTime;
-        }
-
-        if (Input.GetKey(KeyCode.W) && isJumping)
-        {
-            if (jumpTimeCounter > 0)
+            Debug.Log(transform.position);
+            rb.velocity = Vector2.up * jumpForce * 1.5f;
+            if (!playedSlimeJumpSound)
             {
-
-                rb.velocity = Vector2.up * jumpForce;
-                jumpTimeCounter -= Time.deltaTime;
+                SoundManager.PlaySound("slimeJump");
+                playedSlimeJumpSound = true;
             }
-            else
+        }
+        else
+        {
+            playedSlimeJumpSound = false;
+            if (isGrounded && Input.GetKeyDown(KeyCode.W))
+            {
+                rb.velocity = Vector2.up * jumpForce;
+                isJumping = true;
+                jumpTimeCounter = jumpTime;
+            }
+
+            if (Input.GetKey(KeyCode.W) && isJumping)
+            {
+                if (jumpTimeCounter > 0)
+                {
+
+                    rb.velocity = Vector2.up * jumpForce;
+                    jumpTimeCounter -= Time.deltaTime;
+                }
+                else
+                {
+                    isJumping = false;
+                }
+            }
+
+            if (Input.GetKeyUp(KeyCode.W))
             {
                 isJumping = false;
             }
         }
+    }
 
-        if (Input.GetKeyUp(KeyCode.W))
+    public void Damage(int dmg)
+    {
+        StartCoroutine(Flasher());
+        fireCharge -= dmg;
+
+        if (fireCharge <= 0)
         {
-            isJumping = false;
+            Debug.Log("game over");
+
+            SceneManager.LoadScene(0);
+            transform.position = brazier.transform.position;
+        }
+    }
+
+    IEnumerator Flasher()
+    {
+        for (int i = 0; i < 5; i++)
+        {
+            GetComponent<Renderer>().material.color = Color.clear;
+            yield return new WaitForSeconds(.1f);
+            GetComponent<Renderer>().material.color = normalColor;
+            yield return new WaitForSeconds(.1f);
         }
     }
 }

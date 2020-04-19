@@ -11,6 +11,8 @@ public class Torch : MonoBehaviour
 
     public float flickerSpeed = 0.5f;
 
+    public Player player;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -21,7 +23,7 @@ public class Torch : MonoBehaviour
     void Update()
     {
         float time = Mathf.PingPong(Time.time * flickerSpeed, 1);
-        lightSource.intensity = Mathf.Lerp(minRange, maxRange, time);
+        lightSource.intensity = Mathf.Lerp(minRange + player.fireCharge, maxRange + player.fireCharge, time);
     }
 
 }

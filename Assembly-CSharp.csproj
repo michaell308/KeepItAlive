@@ -62,15 +62,17 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\AttackBox.cs" />
-    <Compile Include="Assets\Brazier.cs" />
-    <Compile Include="Assets\DestructibleGround.cs" />
-    <Compile Include="Assets\Enemy.cs" />
-    <Compile Include="Assets\HeftyChonker.cs" />
-    <Compile Include="Assets\Player.cs" />
-    <Compile Include="Assets\Projectile.cs" />
-    <Compile Include="Assets\Skipme.cs" />
-    <Compile Include="Assets\Torch.cs" />
+    <Compile Include="Assets\Scripts\AttackRange.cs" />
+    <Compile Include="Assets\Scripts\Brazier.cs" />
+    <Compile Include="Assets\Scripts\DestructibleGround.cs" />
+    <Compile Include="Assets\Scripts\Enemy.cs" />
+    <Compile Include="Assets\Scripts\HeftyChonker.cs" />
+    <Compile Include="Assets\Scripts\Pit.cs" />
+    <Compile Include="Assets\Scripts\Player.cs" />
+    <Compile Include="Assets\Scripts\Projectile.cs" />
+    <Compile Include="Assets\Scripts\Skipme.cs" />
+    <Compile Include="Assets\Scripts\SoundManager.cs" />
+    <Compile Include="Assets\Scripts\Torch.cs" />
     <Reference Include="Unity.Timeline.Editor">
       <HintPath>C:/Users/mikel/Documents/Unity_Projects/KeepItAlive_LDJam_04_2020/Library/ScriptAssemblies/Unity.Timeline.Editor.dll</HintPath>
     </Reference>
