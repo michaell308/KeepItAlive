@@ -12,6 +12,7 @@ public class Player : MonoBehaviour
     private float moveInput;
 
     //jumping
+    Vector2 feetBoxSize = new Vector2(0.5f,0.5f);
     private bool isGrounded = false;
     public float jumpForce = 25.0f;
 
@@ -148,7 +149,8 @@ public class Player : MonoBehaviour
     void Jump()
     {
         //jumping
-        isGrounded = Physics2D.OverlapCircle(feetPos.position, checkRadius, groundMask);
+        
+        isGrounded = Physics2D.OverlapBox(feetPos.position, feetBoxSize, 0, groundMask);
 
         if (isGrounded && Input.GetKeyDown(KeyCode.W))
         {
