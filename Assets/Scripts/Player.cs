@@ -47,8 +47,13 @@ public class Player : MonoBehaviour
     //sound
     private bool playedSlimeJumpSound;
 
+    public Transform torch;
+    private Vector3 initTorchPos;
+    private Vector3 downTorchPos;
+
     public static Player instance;
     
+
 
     void Awake()
     {
@@ -67,6 +72,8 @@ public class Player : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        initTorchPos = torch.transform.localPosition;
+        downTorchPos = new Vector3(initTorchPos.x, initTorchPos.y-0.1f, initTorchPos.z);
         fireCharge = maxFireCharge;
         rb = GetComponent<Rigidbody2D>();
         spriteMaterial = GetComponent<SpriteRenderer>().material;
@@ -83,6 +90,7 @@ public class Player : MonoBehaviour
         else if (collision.gameObject.layer == LayerMask.NameToLayer("Brazier"))
         {
             fireCharge = maxFireCharge;
+            torch.localScale = new Vector3(1, 1, 1);
             if (brazier == null || collision.GetComponent<Brazier>().checkPointNum > brazier.checkPointNum)
             {
                 brazier = collision.GetComponent<Brazier>();
@@ -199,8 +207,17 @@ public class Player : MonoBehaviour
 
     public void Damage(int dmg)
     {
-        StartCoroutine(Flasher());
+        //StartCoroutine(Flasher());
         fireCharge -= dmg;
+
+        if (fireCharge <= 1)
+        {
+            torch.localScale = new Vector3(0.5f, 0.5f, 1);
+        }
+        else if (fireCharge <= 2)
+        {
+            torch.localScale = new Vector3(0.75f, 0.75f, 1);
+        }
 
         if (fireCharge <= 0)
         {
@@ -208,6 +225,7 @@ public class Player : MonoBehaviour
 
             SceneManager.LoadScene(0);
             transform.position = brazier.transform.position;
+            torch.localScale = new Vector3(1, 1, 1);
         }
     }
 
@@ -220,5 +238,17 @@ public class Player : MonoBehaviour
             GetComponent<Renderer>().material.color = normalColor;
             yield return new WaitForSeconds(.1f);
         }
+    }
+
+    public void bobTorchDown()
+    {
+        //torch.Translate(new Vector2(0, -0.1f));
+        torch.localPosition = downTorchPos;
+
+    }
+    public void bobTorchUp()
+    {
+        torch.localPosition = initTorchPos;
+        //torch.Translate(new Vector2(0, 0.1f));
     }
 }

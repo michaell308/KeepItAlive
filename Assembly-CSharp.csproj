@@ -73,6 +73,8 @@
     <Compile Include="Assets\Scripts\Skipme.cs" />
     <Compile Include="Assets\Scripts\SoundManager.cs" />
     <Compile Include="Assets\Scripts\Torch.cs" />
+    <Compile Include="Assets\Scripts\WaterDrop.cs" />
+    <Compile Include="Assets\Scripts\WaterDropCreator.cs" />
     <Reference Include="Unity.Timeline.Editor">
       <HintPath>C:/Users/mikel/Documents/Unity_Projects/KeepItAlive_LDJam_04_2020/Library/ScriptAssemblies/Unity.Timeline.Editor.dll</HintPath>
     </Reference>
