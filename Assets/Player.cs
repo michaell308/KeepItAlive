@@ -29,8 +29,18 @@ public class Player : MonoBehaviour
 
     Brazier brazier;
 
+    //attack
+    public BoxCollider2D attackBox;
+    private bool attackOnCooldown;
+    public float attackBoxTime;
+    public float attackCooldownTime;
+
+    private bool attacking;
+    public float attackTimer;
+    public float attackCooldown;
 
     public static Player instance;
+    
 
     void Awake()
     {
@@ -78,12 +88,7 @@ public class Player : MonoBehaviour
             fireCharge = maxFireCharge;
             if (brazier == null || collision.GetComponent<Brazier>().checkPointNum > brazier.checkPointNum)
             {
-                if (brazier != null)
-                {
-                    brazier.holdingPlayer = false;
-                }
                 brazier = collision.GetComponent<Brazier>();
-                brazier.holdingPlayer = true;
             }
         }
     }
@@ -91,6 +96,7 @@ public class Player : MonoBehaviour
     private void Update()
     {
         Jump();
+        Attack();
 
     }
 
@@ -100,6 +106,29 @@ public class Player : MonoBehaviour
         moveInput = Input.GetAxisRaw("Horizontal");
         rb.velocity = new Vector2(moveInput * speed, rb.velocity.y);
     }
+
+
+
+    void Attack()
+    {
+        if (Input.GetMouseButtonDown(0) && !attackOnCooldown)
+        {
+            StartCoroutine(enableAttackBox());
+        }
+    }
+
+    IEnumerator enableAttackBox()
+    {
+        attackOnCooldown = true;
+        attackBox.enabled = true;
+        attackBox.gameObject.GetComponent<SpriteRenderer>().enabled = true;
+        yield return new WaitForSeconds(attackBoxTime);
+        attackBox.enabled = false;
+        attackBox.gameObject.GetComponent<SpriteRenderer>().enabled = false;
+        yield return new WaitForSeconds(attackCooldownTime);
+        attackOnCooldown = false;
+    }
+
 
     void Jump()
     {

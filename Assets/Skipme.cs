@@ -21,6 +21,12 @@ public class Skipme : MonoBehaviour
     private bool isShooting;
     public GameObject projectile;
 
+    //health
+    public int health = 3;
+    private bool beingHit;
+
+    public Player player;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -52,10 +58,24 @@ public class Skipme : MonoBehaviour
         }
     }
 
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+       if (collision.gameObject.layer == LayerMask.NameToLayer("PlayerAttack"))
+        {
+            Debug.Log("hit!");
+            health--;
+
+            if (health == 0)
+            {
+                Destroy(this.gameObject);
+            }
+        }
+    }
+
     IEnumerator attackThenWait(Collider2D player)
     {
         isShooting = true;
-        Debug.Log("attack!");
+        Debug.Log("skipme attack hit!");
         Projectile proj = Instantiate(projectile, transform.position, Quaternion.identity).GetComponent<Projectile>();
         bool goRight = player.transform.position.x > transform.position.x ? true : false;
         proj.setDirection(goRight);
