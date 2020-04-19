@@ -64,6 +64,9 @@
   <ItemGroup>
     <Compile Include="Assets\AttackBox.cs" />
     <Compile Include="Assets\Brazier.cs" />
+    <Compile Include="Assets\DestructibleGround.cs" />
+    <Compile Include="Assets\Enemy.cs" />
+    <Compile Include="Assets\HeftyChonker.cs" />
     <Compile Include="Assets\Player.cs" />
     <Compile Include="Assets\Projectile.cs" />
     <Compile Include="Assets\Skipme.cs" />

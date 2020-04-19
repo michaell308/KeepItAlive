@@ -36,8 +36,9 @@ public class Player : MonoBehaviour
     public float attackCooldownTime;
 
     private bool attacking;
-    public float attackTimer;
-    public float attackCooldown;
+
+    //animation
+    public Animator animator;
 
     public static Player instance;
     
@@ -104,6 +105,20 @@ public class Player : MonoBehaviour
     {
         //horizontal movement
         moveInput = Input.GetAxisRaw("Horizontal");
+        animator.SetFloat("Speed", Mathf.Abs(moveInput));
+        if (moveInput < 0)
+        {
+            Vector3 thisScale = transform.localScale;
+            thisScale.x = -1;
+            transform.localScale = thisScale;
+        }
+        else if (moveInput > 0)
+        {
+            Vector3 thisScale = transform.localScale;
+            thisScale.x = 1;
+            transform.localScale = thisScale;
+        }
+
         rb.velocity = new Vector2(moveInput * speed, rb.velocity.y);
     }
 

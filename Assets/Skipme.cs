@@ -23,7 +23,9 @@ public class Skipme : MonoBehaviour
 
     //health
     public int health = 3;
-    private bool beingHit;
+
+    //animation
+    public Animator animator;
 
     public Player player;
 
@@ -79,6 +81,18 @@ public class Skipme : MonoBehaviour
         Projectile proj = Instantiate(projectile, transform.position, Quaternion.identity).GetComponent<Projectile>();
         bool goRight = player.transform.position.x > transform.position.x ? true : false;
         proj.setDirection(goRight);
+        Vector3 thisScale = transform.localScale;
+
+        if (goRight)
+        {
+            thisScale.x = -1;
+            transform.localScale = thisScale;
+        }
+        else
+        {
+            thisScale.x = 1;
+            transform.localScale = thisScale;
+        }
         yield return new WaitForSeconds(waitTimeBetweenAttacks);
         isShooting = false;
     }
@@ -91,6 +105,7 @@ public class Skipme : MonoBehaviour
         if (transform.position == targetPos && !isIdle)
         {
             isIdle = true;
+            animator.SetBool("pausingPatrol", true);
             StartCoroutine(waitThenChooseTarget());
         }
     }
@@ -103,6 +118,7 @@ public class Skipme : MonoBehaviour
             reachedTarget();
         }
         isIdle = false;
+        animator.SetBool("pausingPatrol", false);
     }
 
     private void reachedTarget()
@@ -110,6 +126,18 @@ public class Skipme : MonoBehaviour
         var rendererBounds = platform.GetComponent<SpriteRenderer>().bounds;
         //choose new target position
         targetPos = new Vector3(Random.Range(rendererBounds.min.x, rendererBounds.max.x), transform.position.y, transform.position.z);
+        if (targetPos.x > transform.position.x)
+        {
+            Vector3 thisScale = transform.localScale;
+            thisScale.x = -1;
+            transform.localScale = thisScale;
+        }
+        else
+        {
+            Vector3 thisScale = transform.localScale;
+            thisScale.x = 1;
+            transform.localScale = thisScale;
+        }
     }
 
 
