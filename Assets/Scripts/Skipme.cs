@@ -29,7 +29,7 @@ public class Skipme : MonoBehaviour
     private Material spriteMaterial;
     private Color normalColor;
 
-    public Player player;
+    private Player player;
 
     // Start is called before the first frame update
     void Start()
@@ -38,6 +38,7 @@ public class Skipme : MonoBehaviour
         spriteMaterial = GetComponent<SpriteRenderer>().material;
         normalColor = spriteMaterial.color;
 
+        player = Player.instance;
     }
 
     // Update is called once per frame
@@ -70,6 +71,7 @@ public class Skipme : MonoBehaviour
     {
        if (collision.gameObject.layer == LayerMask.NameToLayer("PlayerAttack"))
         {
+            player.Damage(1);
             Debug.Log("hit!");
             health--;
             StartCoroutine(Flasher());

@@ -141,7 +141,7 @@ public class Player : MonoBehaviour
         if (Input.GetMouseButtonDown(0) && !attackOnCooldown)
         {
             StartCoroutine(enableAttackBox());
-            Damage(1);
+            //Damage(1);
         }
     }
 
@@ -166,7 +166,6 @@ public class Player : MonoBehaviour
         onSkipme = Physics2D.OverlapBox(feetPos.position, feetBoxSize, 0, skipmeMask);
         if (onSkipme)
         {
-            Debug.Log(transform.position);
             rb.velocity = Vector2.up * jumpForce * 1.5f;
             if (!playedSlimeJumpSound)
             {
