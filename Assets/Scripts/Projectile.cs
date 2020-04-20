@@ -60,6 +60,7 @@ public class Projectile : MonoBehaviour
     public void setDirection(bool goRight)
     {
         this.goRight = goRight;
+
     }
 
     IEnumerator WaitAndDestroy()
