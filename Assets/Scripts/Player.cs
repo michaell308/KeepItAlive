@@ -17,6 +17,7 @@ public class Player : MonoBehaviour
     Vector2 feetBoxSize = new Vector2(0.5f,0.5f);
     private bool isGrounded = false;
     public float jumpForce = 25.0f;
+    public float slimeJumpForce = 30.0f;
 
     public Transform feetPos;
     public float checkRadius = 0.2f;
@@ -259,7 +260,7 @@ public class Player : MonoBehaviour
         onSkipme = Physics2D.OverlapBox(feetPos.position, feetBoxSize, 0, skipmeMask);
         if (onSkipme)
         {
-            rb.velocity = Vector2.up * jumpForce * 1.5f;
+            rb.velocity = Vector2.up * slimeJumpForce;
             if (!playedSlimeJumpSound)
             {
                 SoundManager.PlaySound("slimeJump");
