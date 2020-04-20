@@ -8,7 +8,7 @@ public class Player : MonoBehaviour
     private Rigidbody2D rb;
 
     //horizontal movement
-    private float speed = 20;
+    public float speed = 20;
     private float moveInput;
 
     //jumping
