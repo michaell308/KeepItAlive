@@ -112,6 +112,11 @@ public class Player : MonoBehaviour
             Destroy(collision.gameObject);
             Damage(1);
         }
+        else if (collision.gameObject.layer == LayerMask.NameToLayer("Level2"))
+        {
+            //transform.position = new Vector3(100, -15, 1);
+            SceneManager.LoadScene("Level_2");
+        }
         else if (collision.gameObject.layer == LayerMask.NameToLayer("Brazier"))
         {
             refreshFire();
