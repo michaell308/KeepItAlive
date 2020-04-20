@@ -28,7 +28,7 @@ public class Player : MonoBehaviour
 
     //health
     public int fireCharge;
-    private int maxFireCharge = 3;
+    private int maxFireCharge = 5;
 
     public Brazier brazier;
 
@@ -51,6 +51,8 @@ public class Player : MonoBehaviour
     private SpriteRenderer torchRenderer;
     private Vector3 initTorchPos;
     private Vector3 downTorchPos;
+
+    public Transform fireUI;
 
     public static Player instance;
     
@@ -86,16 +88,29 @@ public class Player : MonoBehaviour
     {
         if (collision.gameObject.layer == LayerMask.NameToLayer("Projectile"))
         {
+            SoundManager.PlaySound("extinguish");
             Destroy(collision.gameObject);
             Damage(1);
         }
         else if (collision.gameObject.layer == LayerMask.NameToLayer("Brazier"))
         {
             fireCharge = maxFireCharge;
+            //fireUI.Children
+            foreach (Transform child in fireUI)
+            {
+                /*if (child.gameObject.tag == tag)
+                {
+                    list.Add(child.gameObject);
+                }
+                AddDescendantsWithTag(child, tag, list);*/
+                child.GetComponent<SpriteRenderer>().enabled = true;
+            }
             torch.localScale = new Vector3(1, 1, 1);
             if (brazier == null || collision.GetComponent<Brazier>().checkPointNum > brazier.checkPointNum)
             {
                 brazier = collision.GetComponent<Brazier>();
+                brazier.transform.Find("fire").gameObject.SetActive(true);
+                SoundManager.PlaySound("braizerOn");
             }
         }
         else if (collision.gameObject.layer == LayerMask.NameToLayer("Waterfall"))
@@ -125,12 +140,20 @@ public class Player : MonoBehaviour
             Vector3 thisScale = transform.localScale;
             thisScale.x = -1;
             transform.localScale = thisScale;
+
+            Vector3 childScale = fireUI.transform.localScale;
+            childScale.x = -1;
+            fireUI.transform.localScale = childScale;
         }
         else if (moveInput > 0)
         {
             Vector3 thisScale = transform.localScale;
             thisScale.x = 1;
             transform.localScale = thisScale;
+
+            Vector3 childScale = fireUI.transform.localScale;
+            childScale.x = 1;
+            fireUI.transform.localScale = childScale;
         }
 
         rb.velocity = new Vector2(moveInput * speed, rb.velocity.y);
@@ -142,6 +165,7 @@ public class Player : MonoBehaviour
     {
         if (Input.GetMouseButtonDown(0) && !attackOnCooldown)
         {
+            
             StartCoroutine(enableAttackBox());
             //Damage(1);
         }
@@ -149,21 +173,21 @@ public class Player : MonoBehaviour
 
     IEnumerator enableAttackBox()
     {
-        Debug.Log("hi");
+        SoundManager.PlaySound("torchSwing" + Random.Range(1, 2));
         //torch.GetComponent<SpriteRenderer>().enabled = false;
         torch.localPosition = new Vector3(-100, -100, -100);
         //torchRenderer.enabled = false;
         attackOnCooldown = true;
         attackBox.enabled = true;
         animator.SetBool("Attacking",true);
-        attackBox.gameObject.GetComponent<SpriteRenderer>().enabled = true;
+        //attackBox.gameObject.GetComponent<SpriteRenderer>().enabled = true;
         yield return new WaitForSeconds(attackBoxTime);
         attackBox.enabled = false;
-        attackBox.gameObject.GetComponent<SpriteRenderer>().enabled = false;
+        //attackBox.gameObject.GetComponent<SpriteRenderer>().enabled = false;
         yield return new WaitForSeconds(attackCooldownTime);
         attackOnCooldown = false;
         animator.SetBool("Attacking", false);
-        torch.localPosition = initTorchPos;
+        //torch.localPosition = initTorchPos;
         //torchRenderer.enabled = true;
         //torch.GetComponent<SpriteRenderer>().enabled = true;
 
@@ -230,6 +254,9 @@ public class Player : MonoBehaviour
             torch.localScale = new Vector3(0.75f, 0.75f, 1);
         }
 
+        fireUI.GetChild(fireCharge).GetComponent<SpriteRenderer>().enabled = false;
+
+
         if (fireCharge <= 0)
         {
             Debug.Log("game over");
@@ -253,13 +280,12 @@ public class Player : MonoBehaviour
 
     public void bobTorchDown()
     {
-        //torch.Translate(new Vector2(0, -0.1f));
         torch.localPosition = downTorchPos;
 
     }
     public void bobTorchUp()
     {
         torch.localPosition = initTorchPos;
-        //torch.Translate(new Vector2(0, 0.1f));
     }
+
 }

@@ -66,11 +66,13 @@
     <Compile Include="Assets\Scripts\Brazier.cs" />
     <Compile Include="Assets\Scripts\DestructibleGround.cs" />
     <Compile Include="Assets\Scripts\Enemy.cs" />
+    <Compile Include="Assets\Scripts\FakePlayer.cs" />
     <Compile Include="Assets\Scripts\HeftyChonker.cs" />
     <Compile Include="Assets\Scripts\Pit.cs" />
     <Compile Include="Assets\Scripts\Player.cs" />
     <Compile Include="Assets\Scripts\Projectile.cs" />
     <Compile Include="Assets\Scripts\Skipme.cs" />
+    <Compile Include="Assets\Scripts\SleepingSlime.cs" />
     <Compile Include="Assets\Scripts\SoundManager.cs" />
     <Compile Include="Assets\Scripts\Torch.cs" />
     <Compile Include="Assets\Scripts\WaterDrop.cs" />

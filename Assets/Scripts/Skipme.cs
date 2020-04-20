@@ -4,11 +4,15 @@ using UnityEngine;
 
 public class Skipme : MonoBehaviour
 {
+    public bool doesNotMove;
+
     //patrolling
     public float speed = 5.0f;
     private Vector3 targetPos;
     private bool isIdle = false;
-    public GameObject platform;
+    //public GameObject platform;
+    public Transform farLeft;
+    public Transform farRight;
 
     //vision
     private Collider2D foundPlayer;
@@ -29,11 +33,15 @@ public class Skipme : MonoBehaviour
     private Material spriteMaterial;
     private Color normalColor;
 
+    public AudioClip slimeSquishSound;
+    public AudioClip slimeAttackSound;
+
     private Player player;
 
     // Start is called before the first frame update
     void Start()
     {
+
         reachedTarget();
         spriteMaterial = GetComponent<SpriteRenderer>().material;
         normalColor = spriteMaterial.color;
@@ -47,7 +55,10 @@ public class Skipme : MonoBehaviour
         
         if (!attacking)
         {
-            patrol();
+            if (!doesNotMove)
+            {
+                patrol();
+            }
             foundPlayer = Physics2D.OverlapCircle(transform.position, patrolRadius, playerMask);
         }
 
@@ -72,7 +83,6 @@ public class Skipme : MonoBehaviour
        if (collision.gameObject.layer == LayerMask.NameToLayer("PlayerAttack"))
         {
             player.Damage(1);
-            Debug.Log("hit!");
             health--;
             StartCoroutine(Flasher());
             if (health == 0)
@@ -85,6 +95,7 @@ public class Skipme : MonoBehaviour
     IEnumerator attackThenWait(Collider2D player)
     {
         isShooting = true;
+        GetComponent<AudioSource>().PlayOneShot(slimeAttackSound);
         Projectile proj = Instantiate(projectile, transform.position, Quaternion.identity).GetComponent<Projectile>();
         bool goRight = player.transform.position.x > transform.position.x ? true : false;
         proj.setDirection(goRight);
@@ -130,9 +141,9 @@ public class Skipme : MonoBehaviour
 
     private void reachedTarget()
     {
-        var rendererBounds = platform.GetComponent<SpriteRenderer>().bounds;
+        //var rendererBounds = platform.GetComponent<SpriteRenderer>().bounds;
         //choose new target position
-        targetPos = new Vector3(Random.Range(rendererBounds.min.x, rendererBounds.max.x), transform.position.y, transform.position.z);
+        targetPos = new Vector3(Random.Range(farLeft.position.x, farRight.position.x), transform.position.y, transform.position.z);
         if (targetPos.x > transform.position.x)
         {
             Vector3 thisScale = transform.localScale;
@@ -159,7 +170,11 @@ public class Skipme : MonoBehaviour
         }
     }
 
-
+    public void slimeSquish()
+    {
+        //SoundManager.PlaySound("slimeSquish");
+        GetComponent<AudioSource>().PlayOneShot(slimeSquishSound);
+    }
 
     void OnDrawGizmosSelected()
     {

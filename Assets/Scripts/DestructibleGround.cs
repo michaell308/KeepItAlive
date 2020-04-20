@@ -25,6 +25,7 @@ public class DestructibleGround : MonoBehaviour
         if (collision.gameObject.layer == LayerMask.NameToLayer("Player"))
         {
             fall = true;
+            Destroy(gameObject, 5);
         }
     }
 }
