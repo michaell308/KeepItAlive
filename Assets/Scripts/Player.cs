@@ -48,6 +48,7 @@ public class Player : MonoBehaviour
     private bool playedSlimeJumpSound;
 
     public Transform torch;
+    private SpriteRenderer torchRenderer;
     private Vector3 initTorchPos;
     private Vector3 downTorchPos;
 
@@ -78,6 +79,7 @@ public class Player : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         spriteMaterial = GetComponent<SpriteRenderer>().material;
         normalColor = spriteMaterial.color;
+        torchRenderer = torch.GetComponent<SpriteRenderer>();
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -147,14 +149,24 @@ public class Player : MonoBehaviour
 
     IEnumerator enableAttackBox()
     {
+        Debug.Log("hi");
+        //torch.GetComponent<SpriteRenderer>().enabled = false;
+        torch.localPosition = new Vector3(-100, -100, -100);
+        //torchRenderer.enabled = false;
         attackOnCooldown = true;
         attackBox.enabled = true;
+        animator.SetBool("Attacking",true);
         attackBox.gameObject.GetComponent<SpriteRenderer>().enabled = true;
         yield return new WaitForSeconds(attackBoxTime);
         attackBox.enabled = false;
         attackBox.gameObject.GetComponent<SpriteRenderer>().enabled = false;
         yield return new WaitForSeconds(attackCooldownTime);
         attackOnCooldown = false;
+        animator.SetBool("Attacking", false);
+        torch.localPosition = initTorchPos;
+        //torchRenderer.enabled = true;
+        //torch.GetComponent<SpriteRenderer>().enabled = true;
+
     }
 
 

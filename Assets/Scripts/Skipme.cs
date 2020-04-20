@@ -149,6 +149,7 @@ public class Skipme : MonoBehaviour
 
     IEnumerator Flasher()
     {
+        yield return new WaitForSeconds(0.1f);
         for (int i = 0; i < 4; i++)
         {
             GetComponent<Renderer>().material.color = Color.red;
