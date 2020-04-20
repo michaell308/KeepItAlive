@@ -8,10 +8,14 @@ public class Player : MonoBehaviour
     private Rigidbody2D rb;
 
     //horizontal movement
-    private float speed;
+    public float speed;
     public float walkSpeed = 20;
+    public float jogSpeed = 25;
     public float runSpeed = 30;
     private float moveInput;
+    public float timeToReachJogSpeed = 0.5f;
+    public float timeToReachRunSpeed = 0.5f;
+
 
     //jumping
     Vector2 feetBoxSize = new Vector2(0.5f,0.5f);
@@ -64,10 +68,13 @@ public class Player : MonoBehaviour
     private bool dKeyUp;
     private bool aKeyUp;
 
-    private IEnumerator runCorutineD;
-    private IEnumerator runCorutineA;
+    private IEnumerator jogCoroutineD;
+    private IEnumerator jogCoroutineA;
 
-    public float timeToReachRunSpeed = 0.5f;
+    private IEnumerator runCoroutineD;
+    private IEnumerator runCoroutineA;
+
+
 
     void Awake()
     {
@@ -140,12 +147,12 @@ public class Player : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.D))
         {
             dKeyUp = false;
-            runCorutineD = tryRunningD();
-            StartCoroutine(runCorutineD);
+            jogCoroutineD = tryJoggingD();
+            StartCoroutine(jogCoroutineD);
         }
         if (Input.GetKeyUp(KeyCode.D))
         {
-            StopCoroutine(runCorutineD);
+            StopCoroutine(jogCoroutineD);
             dKeyUp = true;
             speed = walkSpeed;
         }
@@ -153,12 +160,12 @@ public class Player : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.A))
         {
             aKeyUp = false;
-            runCorutineA = tryRunningA();
-            StartCoroutine(runCorutineA);
+            jogCoroutineA = tryJoggingA();
+            StartCoroutine(jogCoroutineA);
         }
         if (Input.GetKeyUp(KeyCode.A))
         {
-            StopCoroutine(runCorutineA);
+            StopCoroutine(jogCoroutineA);
             aKeyUp = true;
             speed = walkSpeed;
         }
@@ -199,6 +206,28 @@ public class Player : MonoBehaviour
         
 
             rb.velocity = new Vector2(moveInput * speed, rb.velocity.y);
+    }
+
+    IEnumerator tryJoggingD()
+    {
+        yield return new WaitForSeconds(timeToReachJogSpeed);
+        if (dKeyUp == false)
+        {
+            speed = jogSpeed;
+            runCoroutineD = tryRunningD();
+            StartCoroutine(runCoroutineD);
+        }
+    }
+
+    IEnumerator tryJoggingA()
+    {
+        yield return new WaitForSeconds(timeToReachJogSpeed);
+        if (aKeyUp == false)
+        {
+            speed = jogSpeed;
+            runCoroutineA = tryRunningA();
+            StartCoroutine(runCoroutineA);
+        }
     }
 
     IEnumerator tryRunningD()
