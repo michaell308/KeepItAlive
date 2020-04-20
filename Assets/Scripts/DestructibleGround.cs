@@ -16,7 +16,7 @@ public class DestructibleGround : MonoBehaviour
     {
        if (fall)
        {
-            transform.Translate(Vector2.down * Time.deltaTime * 100.0f);
+            transform.Translate(Vector2.down * Time.deltaTime * 20.0f);
        } 
     }
 

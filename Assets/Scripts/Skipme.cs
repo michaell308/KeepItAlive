@@ -30,21 +30,21 @@ public class Skipme : MonoBehaviour
 
     //animation
     public Animator animator;
-    private Material spriteMaterial;
     private Color normalColor;
 
     public AudioClip slimeSquishSound;
     public AudioClip slimeAttackSound;
+
+    private SpriteRenderer spriteRenderer;
 
     private Player player;
 
     // Start is called before the first frame update
     void Start()
     {
-
+        spriteRenderer = GetComponent<SpriteRenderer>();
+        normalColor = spriteRenderer.color;
         reachedTarget();
-        spriteMaterial = GetComponent<SpriteRenderer>().material;
-        normalColor = spriteMaterial.color;
 
         player = Player.instance;
     }
@@ -160,12 +160,13 @@ public class Skipme : MonoBehaviour
 
     IEnumerator Flasher()
     {
-        yield return new WaitForSeconds(0.1f);
+        Debug.Log("FLASH");
+        //yield return new WaitForSeconds(0.1f);
         for (int i = 0; i < 4; i++)
         {
-            GetComponent<Renderer>().material.color = Color.red;
+            spriteRenderer.color = Color.red;
             yield return new WaitForSeconds(.1f);
-            GetComponent<Renderer>().material.color = normalColor;
+            spriteRenderer.color = normalColor;
             yield return new WaitForSeconds(.1f);
         }
     }

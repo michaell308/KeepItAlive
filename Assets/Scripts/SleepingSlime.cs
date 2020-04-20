@@ -15,7 +15,7 @@ public class SleepingSlime : MonoBehaviour
         player = Player.instance;
 
         childRenderer = transform.GetChild(0).GetComponent<SpriteRenderer>();
-        normalColor = childRenderer.material.color;
+        normalColor = childRenderer.color;
     }
 
     // Update is called once per frame
@@ -41,9 +41,9 @@ public class SleepingSlime : MonoBehaviour
         yield return new WaitForSeconds(0.1f);
         for (int i = 0; i < 4; i++)
         {
-            childRenderer.material.color = Color.red;
+            childRenderer.color = Color.red;
             yield return new WaitForSeconds(.1f);
-            childRenderer.material.color = normalColor;
+            childRenderer.color = normalColor;
             yield return new WaitForSeconds(.1f);
         }
         Destroy(gameObject);

@@ -25,7 +25,7 @@ public class Pit : MonoBehaviour
         {
             var player = collision.GetComponent<Player>();
             player.transform.position = respawnSpot.position;
-            player.Damage(2);
+            player.Damage(1);
         }
     }
 }

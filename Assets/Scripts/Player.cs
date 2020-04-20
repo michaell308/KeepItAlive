@@ -54,6 +54,8 @@ public class Player : MonoBehaviour
 
     public Transform fireUI;
 
+    private Vector3 initSpawnPos;
+
     public static Player instance;
     
 
@@ -75,6 +77,7 @@ public class Player : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        initSpawnPos = transform.position;
         initTorchPos = torch.transform.localPosition;
         downTorchPos = new Vector3(initTorchPos.x, initTorchPos.y-0.1f, initTorchPos.z);
         fireCharge = maxFireCharge;
@@ -94,18 +97,7 @@ public class Player : MonoBehaviour
         }
         else if (collision.gameObject.layer == LayerMask.NameToLayer("Brazier"))
         {
-            fireCharge = maxFireCharge;
-            //fireUI.Children
-            foreach (Transform child in fireUI)
-            {
-                /*if (child.gameObject.tag == tag)
-                {
-                    list.Add(child.gameObject);
-                }
-                AddDescendantsWithTag(child, tag, list);*/
-                child.GetComponent<SpriteRenderer>().enabled = true;
-            }
-            torch.localScale = new Vector3(1, 1, 1);
+            refreshFire();
             if (brazier == null || collision.GetComponent<Brazier>().checkPointNum > brazier.checkPointNum)
             {
                 brazier = collision.GetComponent<Brazier>();
@@ -121,6 +113,16 @@ public class Player : MonoBehaviour
         {
             Damage(1);
         }
+    }
+
+    private void refreshFire()
+    {
+        fireCharge = maxFireCharge;
+        foreach (Transform child in fireUI)
+        {
+            child.GetComponent<SpriteRenderer>().enabled = true;
+        }
+        torch.localScale = new Vector3(1, 1, 1);
     }
 
     private void Update()
@@ -261,9 +263,15 @@ public class Player : MonoBehaviour
         {
             Debug.Log("game over");
 
-            SceneManager.LoadScene(0);
-            transform.position = brazier.transform.position;
-            torch.localScale = new Vector3(1, 1, 1);
+            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+            if (brazier != null) {
+                transform.position = brazier.transform.position;
+            }
+            else
+            {
+                transform.position = initSpawnPos;
+            }
+            refreshFire();
         }
     }
 
