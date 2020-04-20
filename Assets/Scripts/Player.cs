@@ -8,7 +8,9 @@ public class Player : MonoBehaviour
     private Rigidbody2D rb;
 
     //horizontal movement
-    public float speed = 20;
+    private float speed;
+    public float walkSpeed = 20;
+    public float runSpeed = 30;
     private float moveInput;
 
     //jumping
@@ -57,8 +59,14 @@ public class Player : MonoBehaviour
     private Vector3 initSpawnPos;
 
     public static Player instance;
-    
 
+    private bool dKeyUp;
+    private bool aKeyUp;
+
+    private IEnumerator runCorutineD;
+    private IEnumerator runCorutineA;
+
+    public float timeToReachRunSpeed = 0.5f;
 
     void Awake()
     {
@@ -77,6 +85,7 @@ public class Player : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        speed = walkSpeed;
         initSpawnPos = transform.position;
         initTorchPos = torch.transform.localPosition;
         downTorchPos = new Vector3(initTorchPos.x, initTorchPos.y-0.1f, initTorchPos.z);
@@ -127,6 +136,32 @@ public class Player : MonoBehaviour
 
     private void Update()
     {
+        if (Input.GetKeyDown(KeyCode.D))
+        {
+            dKeyUp = false;
+            runCorutineD = tryRunningD();
+            StartCoroutine(runCorutineD);
+        }
+        if (Input.GetKeyUp(KeyCode.D))
+        {
+            StopCoroutine(runCorutineD);
+            dKeyUp = true;
+            speed = walkSpeed;
+        }
+
+        if (Input.GetKeyDown(KeyCode.A))
+        {
+            aKeyUp = false;
+            runCorutineA = tryRunningA();
+            StartCoroutine(runCorutineA);
+        }
+        if (Input.GetKeyUp(KeyCode.A))
+        {
+            StopCoroutine(runCorutineA);
+            aKeyUp = true;
+            speed = walkSpeed;
+        }
+
         Jump();
         Attack();
 
@@ -158,10 +193,30 @@ public class Player : MonoBehaviour
             fireUI.transform.localScale = childScale;
         }
 
-        rb.velocity = new Vector2(moveInput * speed, rb.velocity.y);
+        Input.GetAxisRaw("Horizontal");
+
+        
+
+            rb.velocity = new Vector2(moveInput * speed, rb.velocity.y);
     }
 
+    IEnumerator tryRunningD()
+    {
+        yield return new WaitForSeconds(timeToReachRunSpeed);
+        if (dKeyUp == false)
+        {
+            speed = runSpeed;
+        }
+    }
 
+    IEnumerator tryRunningA()
+    {
+        yield return new WaitForSeconds(timeToReachRunSpeed);
+        if (aKeyUp == false)
+        {
+            speed = runSpeed;
+        }
+    }
 
     void Attack()
     {
