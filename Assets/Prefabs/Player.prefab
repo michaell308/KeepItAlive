@@ -1157,8 +1157,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   walkSpeed: 20
-  runSpeed: 30
-  jumpForce: 14
+  jogSpeed: 30
+  runSpeed: 50
+  timeToReachJogSpeed: 1
+  timeToReachRunSpeed: 2
+  jumpForce: 15
+  slimeJumpForce: 30
   feetPos: {fileID: 5982096525962287931}
   checkRadius: 0.2
   groundMask:
@@ -1176,7 +1180,6 @@ MonoBehaviour:
   animator: {fileID: 5982096527705143432}
   torch: {fileID: 5982096527115706876}
   fireUI: {fileID: 5982096526573553320}
-  timeToReachRunSpeed: 0.5
 --- !u!95 &5982096527705143432
 Animator:
   serializedVersion: 3

@@ -16,8 +16,8 @@ public class DestructibleGround : MonoBehaviour
     {
        if (fall)
        {
-            transform.Translate(Vector2.down * Time.deltaTime * 20.0f);
-       } 
+            transform.Translate(Vector2.down * Time.deltaTime * 100.0f);
+       }
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -25,7 +25,7 @@ public class DestructibleGround : MonoBehaviour
         if (collision.gameObject.layer == LayerMask.NameToLayer("Player"))
         {
             fall = true;
-            Destroy(gameObject, 5);
+            Destroy(gameObject,5);
         }
     }
 }

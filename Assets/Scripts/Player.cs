@@ -8,7 +8,7 @@ public class Player : MonoBehaviour
     private Rigidbody2D rb;
 
     //horizontal movement
-    public float speed;
+    private float speed;
     public float walkSpeed = 20;
     public float jogSpeed = 25;
     public float runSpeed = 30;
@@ -178,7 +178,7 @@ public class Player : MonoBehaviour
     void FixedUpdate()
     {
         //horizontal movement
-        moveInput = Input.GetAxisRaw("Horizontal");
+        moveInput = Input.GetAxis("Horizontal");
         animator.SetFloat("Speed", Mathf.Abs(moveInput));
         if (moveInput < 0)
         {
