@@ -105,13 +105,15 @@ public class Skipme : MonoBehaviour
         {
             thisScale.x = -1;
             transform.localScale = thisScale;
-            proj.transform.localScale = thisScale;
+            proj.transform.localScale = new Vector3(-0.23f, proj.transform.localScale.y, 1);
         }
         else
         {
             thisScale.x = 1;
             transform.localScale = thisScale;
-            proj.transform.localScale = thisScale;
+            proj.transform.localScale = new Vector3(0.23f, proj.transform.localScale.y, 1);
+
+            //proj.transform.localScale = thisScale;
         }
         yield return new WaitForSeconds(waitTimeBetweenAttacks);
         isShooting = false;
