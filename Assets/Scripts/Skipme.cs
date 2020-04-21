@@ -6,6 +6,8 @@ public class Skipme : MonoBehaviour
 {
     public bool doesNotMove;
 
+    public bool doesNotShoot;
+
     //patrolling
     public float speed = 5.0f;
     private Vector3 targetPos;
@@ -26,7 +28,7 @@ public class Skipme : MonoBehaviour
     public GameObject projectile;
 
     //health
-    public int health = 3;
+    private int health = 1;
 
     //animation
     public Animator animator;
@@ -62,7 +64,7 @@ public class Skipme : MonoBehaviour
             foundPlayer = Physics2D.OverlapCircle(transform.position, patrolRadius, playerMask);
         }
 
-        if (foundPlayer)
+        if (foundPlayer && !doesNotShoot)
         {
             animator.SetBool("pausingPatrol", false);
             attacking = true;
